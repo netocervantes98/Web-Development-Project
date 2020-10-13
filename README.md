@@ -1,6 +1,6 @@
 # Web-Development-Project
 
-##Python
+## Python
 
 - To install requirements:  
  pip install -r requirements.txt
