@@ -1,0 +1,30 @@
+.navbar {
+    background-color: #161616;
+}
+
+.navbar-brand {
+    color: #F3F3F3;
+}
+
+.card {
+    margin: 10px;
+}
+
+.card-title {
+    color: #F3F3F3;
+}
+
+.card-body {
+    display: flex;
+    justify-content: space-between;
+    background-color: #92A2DC;
+}
+
+.card-text {
+    font-size: large;
+    color: #F3F3F3;
+}
+
+.card img {
+    background-color: #475072;
+}
