@@ -1,9 +1,23 @@
 .navbar {
     background-color: #161616;
+    height: 80px;
 }
 
 .navbar-brand {
     color: #F3F3F3;
+    padding-top: 15px !important; 
+    font-size: 32px !important;
+}
+
+.navbar-location {
+    color: #F3F3F3;
+    background-color: #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 20px;
+    height: 45px;
 }
 
 .card {
