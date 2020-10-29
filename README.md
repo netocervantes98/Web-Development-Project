@@ -2,5 +2,9 @@
 
 ## Python
 
-- To install requirements:  
- pip install -r requirements.txt
+- To run the script you should have the following libraries:  
+Pandas, datetime, PyMongo
+
+## Mongo DB
+
+To run the DB: docker-compose up
