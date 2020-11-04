@@ -13,6 +13,8 @@ let priceDocument = {};
 mongoose.connect('mongodb://192.168.99.100:27017/price_data', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
     auth: {
         "authSource": "admin"
     },
@@ -24,7 +26,11 @@ const price_db = mongoose.connection;
 price_db.on('error', console.error.bind(console, 'connection error:'));
 
 const PriceSchema = new mongoose.Schema({
-    id: Number,
-    type: String,
-    value: mongoose.Schema.Types.Mixed 
-})
+    Name: String,
+    Year: Number,
+    Month: Number,
+    Price: Number,
+    Perc_change: Number,
+    }, { collection: 'data' });
+
+const PriceData = mongoose.model('data', PriceSchema);
