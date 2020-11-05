@@ -27,7 +27,7 @@ entry = {
 #Open collection
 coll = db['data']
 
-df = pd.read_csv('INP_PP.csv', encoding = "ISO-8859-1")
+df = pd.read_csv('data.csv', encoding = "ISO-8859-1")
 
 #Get fields of interest
 data = df[['Generico', 'Year', 'Mes', 'Precio promedio']]
@@ -42,7 +42,6 @@ rows = ResData.shape[0]
 
 ResData = ResData.round({'Precio promedio': 3})
 
-print(ResData.dtypes)
 #Calculate percentage change between records and save document to DB
 for ind in ResData.index:
     entry["Name"] = ResData['Generico'][ind]

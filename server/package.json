@@ -14,7 +14,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.10.11",
-    "mongoose-fuzzy-searching": "^2.0.2",
     "mongoose-fuzzy-searching-v2": "^3.0.2"
   }
 }
