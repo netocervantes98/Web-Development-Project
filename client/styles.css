@@ -52,3 +52,31 @@
     height: 20vh;
     object-fit: cover;
 }
+
+.media img {
+    width: 10%;
+    height: 20%;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.media {
+    display: flex;
+    align-content: center;
+    vertical-align: middle;
+}
+
+.media-body {
+    padding-top: 10px;
+}
+
+.cart-element {
+    margin-top: 10px;
+    border-width: 5px;
+    border-radius: 5px;
+    background-color: #92A2DC;
+}
+
+.cart-button {
+    height: 100%;
+}
