@@ -11,7 +11,7 @@ app.use(express.urlencoded({
 
 let priceDocument = {};
 
-mongoose.connect('mongodb://192.168.99.100:27017/price_data', {
+mongoose.connect('mongodb://localhost:27017/price_data', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false,
