@@ -14,6 +14,11 @@ require('./config/config');
 app.use(require('./routes/main'));
 const path = require('path');
 
+let renderHTML = path.resolve(__dirname, '../client/index.html');
+
+app.get('/', function (req, res) {
+    res.sendFile(renderHTML);
+})
 
 let priceDocument = {};
 
@@ -52,6 +57,9 @@ PriceData.fuzzySearch('hue',(err, doc) => {
     }
   });
 
+app.listen(process.env.PORT, ()=> {
+    console.log("Escuchando login/register en puerto 3000");
+})
 
 
 
