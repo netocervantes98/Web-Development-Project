@@ -9,6 +9,12 @@ app.use(express.urlencoded({
   extended: true
 }))
 
+require('./config/config');
+// Configuracion global de rutas
+app.use(require('./routes/main'));
+const path = require('path');
+
+
 let priceDocument = {};
 
 mongoose.connect('mongodb://localhost:27017/price_data', {
