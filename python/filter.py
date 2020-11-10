@@ -26,6 +26,7 @@ entry = {
 
 #Open collection
 coll = db['data']
+collSingle = db['single']
 
 df = pd.read_csv('data.csv', encoding = "ISO-8859-1")
 
@@ -39,11 +40,15 @@ ResData = groups.mean().reset_index()[['Generico', 'Year', 'Mes', 'Precio promed
 
 percentage = 0.0
 rows = ResData.shape[0]
+product = ""
+productPrev = ""
+
 
 ResData = ResData.round({'Precio promedio': 3})
 
 #Calculate percentage change between records and save document to DB
 for ind in ResData.index:
+    product = ResData['Generico'][ind]
     entry["Name"] = ResData['Generico'][ind]
     entry["Year"] = ResData['Year'][ind]
     entry["Month"] = ResData['Mes'][ind]
@@ -66,4 +71,10 @@ for ind in ResData.index:
     
     entry["Year"] = int(entry["Year"])
     entry["Month"] = int(entry["Month"])
+
+    if (productPrev != product):
+        collSingle.insert_one(entry)
+
     coll.insert_one(entry)
+
+    productPrev = product

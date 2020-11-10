@@ -23,8 +23,17 @@ mongoose.connect('mongodb://192.168.99.100:27017/price_data', {
     pass: 'password'
 });
 
-const price_db = mongoose.connection;
-price_db.on('error', console.error.bind(console, 'connection error:'));
+const price_conn = mongoose.connection;
+const sample_conn = mongoose.connection;
+const priceFuzzy_conn = mongoose.connection;
+
+price_conn.on('error', console.error.bind(console, 'connection error:'));
+sample_conn.on('error', console.error.bind(console, 'connection error:'));
+priceFuzzy_conn.on('error', console.error.bind(console, 'connection error:'));
+
+price_conn.once('open', function() {
+  app.listen(3000);
+});
 
 const PriceSchema = new mongoose.Schema({
     Name: String,
@@ -34,17 +43,51 @@ const PriceSchema = new mongoose.Schema({
     'Perc_change' : Number,
     }, { collection: 'data' });
 
+const SingleSchema = new mongoose.Schema({
+  Name: String,
+  Year: Number,
+  Month: Number,
+  Price: Number,
+  'Perc_change' : Number,
+  }, { collection: 'single' });
+
 PriceSchema.plugin(mongoose_fuzzy_searching, { fields: ['Name']});
 
-const PriceData = mongoose.model('data', PriceSchema);
+const PriceDataFuzzy = priceFuzzy_conn.model('data', PriceSchema);
+const SampleData = sample_conn.model('single', SingleSchema);
+const PriceData = price_conn.model('data', PriceSchema);
 
-PriceData.fuzzySearch('hue',(err, doc) => {
+//Get last record of all products
+app.get('/sample', function(req, res){
+  SampleData.find({}, function(err, data){
+    res.send(data);
+  });  
+});
+
+//Get all records from a product
+app.get('/producto', function(req, res){
+  PriceDataFuzzy.fuzzySearch(req.query.nombre,(err, docs) => {
     if (err) {
-      console.error(err);
+      res.send(err);
     } else {
-      console.log(doc);
+      res.send(docs);
     }
   });
+});
+
+//Get records from a product between dates.
+app.get('/fecha', function(req, res){ 
+  PriceData.find({Name: req.query.producto, Year : {$gte : req.query.yIni, $lte : req.query.yFin}}, function(err, docs){
+    if (err) {
+      res.send(err);
+    } else {
+      resultDocs = docs.filter(item => !(item.Year == req.query.yFin && item.Month > req.query.mFin || 
+      item.Year == req.query.yIni && item.Month < req.query.mIni))
+      res.send(resultDocs);
+    }
+  })
+})
+
 
 
 
