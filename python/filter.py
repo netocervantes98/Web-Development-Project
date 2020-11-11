@@ -28,7 +28,8 @@ entry = {
 coll = db['data']
 collSingle = db['single']
 
-df = pd.read_csv('data.csv', encoding = "ISO-8859-1")
+df = pd.read_csv('INP_PP_CAB18.csv',skiprows=4, encoding = "ISO-8859-1")
+df.rename(columns={ df.columns[0]: "Year" }, inplace = True)
 
 #Get fields of interest
 data = df[['Generico', 'Year', 'Mes', 'Precio promedio']]
