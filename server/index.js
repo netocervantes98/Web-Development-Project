@@ -14,13 +14,12 @@ require('./config/config');
 app.use(require('./routes/main'));
 const path = require('path');
 
-let renderHTML = path.resolve(__dirname, '../client/index.html');
 
 app.get('/', function (req, res) {
-    res.sendFile(renderHTML);
+    res.sendFile(path.resolve(__dirname, '../client/login.html'));
 })
 
-let priceDocument = {};
+
 
 mongoose.connect('mongodb://localhost:27017/price_data', {
     useNewUrlParser: true, 
