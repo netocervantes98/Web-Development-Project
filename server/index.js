@@ -9,9 +9,22 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-let priceDocument = {};
+require('./config/config');
+// Configuracion global de rutas
+app.use(require('./routes/main'));
+const path = require('path');
 
-mongoose.connect('mongodb://192.168.99.100:27017/price_data', {
+
+app.get('/', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../client/login.html'));
+})
+
+app.get('/register', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/register.html'));
+})
+
+
+mongoose.connect('mongodb://localhost:27017/price_data', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -89,6 +102,9 @@ app.get('/fecha', function(req, res){
 })
 
 
+app.listen(process.env.PORT, ()=> {
+    console.log("Escuchando login/register en puerto 3000");
+})
 
 
 

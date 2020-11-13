@@ -9,7 +9,7 @@ services:
     command: mongod --wiredTigerCacheSizeGB 2.0
     networks:
       sample-network:
-
+        
 
 
 networks:
