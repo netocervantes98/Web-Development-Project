@@ -19,6 +19,9 @@ app.get('/', function (req, res) {
     res.sendFile(path.resolve(__dirname, '../client/login.html'));
 })
 
+app.get('/register', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/register.html'));
+})
 
 
 mongoose.connect('mongodb://localhost:27017/price_data', {

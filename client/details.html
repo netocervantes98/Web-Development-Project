@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Susana verifica | Tortillas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">Susana verifica</a>
+        <a class="nav-link" href="#">Log out</a>
+    </nav>
+    <div class="navbar-location">
+        <span>Monterrey, Nuevo León</span>
+        <span>30 de octubre de 2020</span>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <!-- <div class="card" style="width:40rem;"> -->
+                <img src="tortillas.png" class="card-img-top" alt="...">
+                <div class="card-img-overlay d-flex flex-column">
+                    <h3 class="card-title">Tortillas</h3>
+                </div>
+                <div class="card-body">
+                    <span class="card-text">+1.80%</span>
+                    <span class="card-text">$13.50</span>
+                </div>
+                <canvas id="myChart" style="margin-top: 50px;"></canvas>
+                <canvas id="myChart2" style="margin-top: 50px;"></canvas>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        Chart.scaleService.updateScaleDefaults('linear', {
+                ticks: {
+                    min: 0
+                }
+            })
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                datasets: [{
+                    label: 'Precio (MXN)',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [15, 12, 11, 14, 15, 16, 20, 19, 18, 19, 20, 21]
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+    <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                datasets: [{
+                    label: 'Porcentaje de cambio',
+                    backgroundColor: 'rgb(200, 200, 150)',
+                    borderColor: 'rgb(200, 200, 150)',
+                    data: [0.15, 0.12, 0.11, 0.14, 0.15, 0.16, 0.10, 0.19, 0.18, 0.19, 0.20, 0.21]
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" i
+        ntegrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
