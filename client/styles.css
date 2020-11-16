@@ -79,4 +79,10 @@
 
 .cart-button {
     height: 100%;
+
+}
+
+.form-check-input {
+    width: 20px !important;
+    height: 20px !important;
 }
