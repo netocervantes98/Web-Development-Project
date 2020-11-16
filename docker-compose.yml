@@ -1,0 +1,16 @@
+version: "3"
+services:
+  mongo-db-prices:
+    image: mongo:4.0
+    env_file:
+      - ./mongo_common.env
+    ports:
+      - "27017:27017"
+    command: mongod --wiredTigerCacheSizeGB 2.0
+    networks:
+      sample-network:
+        
+
+
+networks:
+  sample-network:
