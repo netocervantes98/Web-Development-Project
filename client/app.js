@@ -124,7 +124,7 @@ const Regis = {
 			<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
 		</div>
 		<div class="form-group">
-            <button class="btn btn-success btn-lg btn-block" onclick="register()">Register Now</button>
+            <button type="button" class="btn btn-success btn-lg btn-block" onclick="register()">Register Now</button>
         </div>
     </form>
 	<div class="text-center">Already have an account? <a href="#">Sign in</a></div>
