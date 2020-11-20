@@ -1,5 +1,6 @@
 // Components
 const HomeComponent = {
+  loadJs: true,
   render: () => {
     return `
         <nav class="navbar">
@@ -58,10 +59,14 @@ const HomeComponent = {
     </div>
   </div>
     `;
+  },
+  fun: () => {
+    console.log("a ver si jala")
   }
 }
 
 const Login = {
+  loadJs: false,
   render: () => {
     return `
         <nav class="navbar">
@@ -92,6 +97,7 @@ const Login = {
 }
 
 const Regis = {
+  loadJs: false,
   render: () => {
     return `
         <nav class="navbar">
@@ -164,6 +170,7 @@ const router = () => {
   const { component = ErrorComponent } = findComponentByPath(path, routes) || {};
   // Render the component in the "app" placeholder
   document.getElementById('app').innerHTML = component.render();
+  if(component.loadJs) component.fun()
 };
 
 const checkUser = () => {
