@@ -73,18 +73,18 @@ const Login = {
   </div>
 
       <div class="login-form">
-    <form action="/login" method="post">
-        <h2 class="text-center">Log in</h2>       
-        <div class="form-group">
-            <input type="text" class="form-control" name="email" placeholder="Username" required="required">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </div>      
-    </form>
+    <form>
+    <h2 class="text-center">Log in</h2>       
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" placeholder="Username" required="required" id="email">
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" name="password" placeholder="Password" required="required" id="password">
+    </div>
+    <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" onclick="checkUser()">Log in</button>
+    </div>      
+</form >
     <p class="text-center" ><a style="color:#f7f7f7" href="/#/regis">Create an Account</a></p>
 </div>
     `;
@@ -165,3 +165,22 @@ const router = () => {
     // Render the component in the "app" placeholder
     document.getElementById('app').innerHTML = component.render();
 };
+
+const checkUser = () => {
+    const info = {}
+    info.email = document.getElementById("email").value
+    info.password = document.getElementById("password").value
+
+    axios.post(`http://localhost:3000/`, info).then((data) => {
+        if (data.status) {
+            window.location.href = "http://http://127.0.0.1:3000/#/home";
+        } else {
+            console.log("Error")
+        }
+    }).catch(catchable_handle_for_the_error_generico)
+}
+
+const catchable_handle_for_the_error_generico = (err) => {
+    console.error(err)
+    // document.getElementById("error").innerText = "\nError."
+}
