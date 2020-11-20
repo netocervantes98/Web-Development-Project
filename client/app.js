@@ -13,58 +13,24 @@ const HomeComponent = {
   </div>
 
   <div class="container">
-    <div class="row">
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <a href="#/details">
-          <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
-          <div class="card-img-overlay d-flex flex-column">
-            <h3 class="card-title">Tortillas</h3>
-          </div>
-          <div class="card-body">
-            <span class="card-text">+1.80%</span>
-            <span class="card-text">$13.50</span>
-          </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <a href="#/details">
-          <img src="https://source.unsplash.com/featured/?azucar" class="card-img-top" alt="...">
-          <div class="card-img-overlay d-flex flex-column">
-            <h3 class="card-title">Azucar</h3>
-          </div>
-          <div class="card-body">
-            <span class="card-text">-1.50%</span>
-            <span class="card-text">$30.2</span>
-          </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <a href="#/details">
-          <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
-          <div class="card-img-overlay d-flex flex-column">
-            <h3 class="card-title">Tortillas</h3>
-          </div>
-          <div class="card-body">
-            <span class="card-text">+1.80%</span>
-            <span class="card-text">$13.50</span>
-          </div>
-          </a>
-        </div>
-      </div>
+    <div class="row" id="items">
+      
     </div>
   </div>
     `;
   },
+  
   fun: () => {
-    console.log("a ver si jala")
+    axios.post(`http://localhost:3000/sample`, info).then(({data: data}) => {
+      console.log("sí jala")
+      const items = document.getElementById("items")
+      data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
+      
+    }).catch(catchable_handle_for_the_error_generico)
   }
 }
 
+    
 const Login = {
   loadJs: false,
   render: () => {
@@ -205,4 +171,22 @@ const register = () => {
 const catchable_handle_for_the_error_generico = (err) => {
   console.error(err)
   // document.getElementById("error").innerText = "\nError."
+}
+
+
+const template_function = ({Name, Year, Month, Price}) => {
+  return `<div class="col-sm">
+        <div class="card" style="width: 18rem;">
+        <a href="#/details?${Name}">
+          <img src="https://source.unsplash.com/featured/?${Name}" class="card-img-top" alt="...">
+          <div class="card-img-overlay d-flex flex-column">
+            <h3 class="card-title">${Name}</h3>
+          </div>
+          <div class="card-body">
+            <span class="card-text">+1.80%</span>
+            <span class="card-text">${Price}</span>
+          </div>
+          </a>
+        </div>
+      </div>`
 }
