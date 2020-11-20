@@ -171,9 +171,25 @@ const checkUser = () => {
     info.email = document.getElementById("email").value
     info.password = document.getElementById("password").value
 
-    axios.post(`http://localhost:3000/`, info).then((data) => {
+    axios.post(`http://localhost:3000/login`, info).then((data) => {
         if (data.status) {
-            window.location.href = "http://http://127.0.0.1:3000/#/home";
+            window.location.href = "http://127.0.0.1:3000/#/home";
+        } else {
+            console.log("Error")
+        }
+    }).catch(catchable_handle_for_the_error_generico)
+}
+
+const register = () => {
+    const info = {}
+    info.email = document.getElementById("email").value
+    info.password = document.getElementById("password").value
+    info.nombre = document.getElementById("nombre").value
+    info.role = document.getElementById("role").value
+
+    axios.post(`http://localhost:3000/register`, info).then((data) => {
+        if (data.status) {
+            window.location.href = "http://127.0.0.1:3000/#/";
         } else {
             console.log("Error")
         }
