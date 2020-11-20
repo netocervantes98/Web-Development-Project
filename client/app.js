@@ -102,7 +102,7 @@ const Regis = {
     <span>20 de noviembre de 2020</span>
   </div>
       <div class="signup-form">
-    <form action="/register" method="post">
+    <form action="http://localhost:3000/register" method="post">
 		<h2>Register</h2>
 		<p class="hint-text">Create your account. It's free and only takes a minute.</p>
         <div class="form-group">
