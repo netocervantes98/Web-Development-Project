@@ -82,7 +82,7 @@ const Login = {
         <input type="password" class="form-control" name="password" placeholder="Password" required="required" id="password">
     </div>
     <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block" onclick="checkUser()">Log in</button>
+            <button type="button" class="btn btn-primary btn-block" onclick="checkUser()">Log in</button>
     </div>      
 </form >
     <p class="text-center" ><a style="color:#f7f7f7" href="/#/regis">Create an Account</a></p>
@@ -173,23 +173,7 @@ const checkUser = () => {
 
     axios.post(`http://localhost:3000/login`, info).then((data) => {
         if (data.status) {
-            window.location.href = "http://127.0.0.1:3000/#/home";
-        } else {
-            console.log("Error")
-        }
-    }).catch(catchable_handle_for_the_error_generico)
-}
-
-const register = () => {
-    const info = {}
-    info.email = document.getElementById("email").value
-    info.password = document.getElementById("password").value
-    info.nombre = document.getElementById("nombre").value
-    info.role = document.getElementById("role").value
-
-    axios.post(`http://localhost:3000/register`, info).then((data) => {
-        if (data.status) {
-            window.location.href = "http://127.0.0.1:3000/#/";
+          window.location.href = "http://127.0.0.1:3001/#/home";
         } else {
             console.log("Error")
         }
