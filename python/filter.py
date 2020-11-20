@@ -21,7 +21,7 @@ entry = {
     "Year": 0.0,
     "Month": 0.0, 
     "Price": 0.0,
-    "Perc change": 0.0
+    "Percentage": 0.0
 }
 
 #Open collection
@@ -60,12 +60,12 @@ for ind in ResData.index:
             #Getting percentage change
             percentage = ((ResData['Precio promedio'][ind] / ResData['Precio promedio'][ind+1]) * 100) - 100
             percentage = round(percentage, 3)
-            entry["Perc change"] = percentage
+            entry["Percentage"] = percentage
             
         else:
-            entry["Perc change"] = 0.0
+            entry["Percentage"] = 0.0
     else:
-        entry["Perc change"] = 0.0
+        entry["Percentage"] = 0.0
     
     if '_id' in entry: 
         del entry['_id'] 

@@ -21,7 +21,7 @@ const HomeComponent = {
   },
   
   fun: () => {
-    axios.post(`http://localhost:3000/sample`, info).then(({data: data}) => {
+    axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
       console.log("sí jala")
       const items = document.getElementById("items")
       data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
@@ -174,7 +174,7 @@ const catchable_handle_for_the_error_generico = (err) => {
 }
 
 
-const template_function = ({Name, Year, Month, Price}) => {
+const template_function = ({Name, Year, Month, Price, Percentage}) => {
   return `<div class="col-sm">
         <div class="card" style="width: 18rem;">
         <a href="#/details?${Name}">
@@ -183,7 +183,7 @@ const template_function = ({Name, Year, Month, Price}) => {
             <h3 class="card-title">${Name}</h3>
           </div>
           <div class="card-body">
-            <span class="card-text">+1.80%</span>
+            <span class="card-text">${Percentage}%</span>
             <span class="card-text">${Price}</span>
           </div>
           </a>
