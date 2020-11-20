@@ -15,6 +15,7 @@ const HomeComponent = {
     <div class="row">
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
+        <a href="#/details">
           <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Tortillas</h3>
@@ -23,10 +24,12 @@ const HomeComponent = {
             <span class="card-text">+1.80%</span>
             <span class="card-text">$13.50</span>
           </div>
+          </a>
         </div>
       </div>
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
+        <a href="#/details">
           <img src="https://source.unsplash.com/featured/?azucar" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Azucar</h3>
@@ -35,10 +38,12 @@ const HomeComponent = {
             <span class="card-text">-1.50%</span>
             <span class="card-text">$30.2</span>
           </div>
+          </a>
         </div>
       </div>
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
+        <a href="#/details">
           <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Tortillas</h3>
@@ -47,6 +52,7 @@ const HomeComponent = {
             <span class="card-text">+1.80%</span>
             <span class="card-text">$13.50</span>
           </div>
+          </a>
         </div>
       </div>
     </div>
