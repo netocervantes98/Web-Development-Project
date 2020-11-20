@@ -15,7 +15,7 @@ const HomeComponent = {
     <div class="row">
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
-          <img src="tortillas.png" class="card-img-top" alt="...">
+          <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Tortillas</h3>
           </div>
@@ -27,7 +27,7 @@ const HomeComponent = {
       </div>
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
-          <img src="azucar.png" class="card-img-top" alt="...">
+          <img src="https://source.unsplash.com/featured/?azucar" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Azucar</h3>
           </div>
@@ -39,7 +39,7 @@ const HomeComponent = {
       </div>
       <div class="col-sm">
         <div class="card" style="width: 18rem;">
-          <img src="tortillas.png" class="card-img-top" alt="...">
+          <img src="https://source.unsplash.com/featured/?tortilla" class="card-img-top" alt="...">
           <div class="card-img-overlay d-flex flex-column">
             <h3 class="card-title">Tortillas</h3>
           </div>
