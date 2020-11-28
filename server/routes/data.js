@@ -2,8 +2,11 @@ const express = require('express');
 const Sample = require('./../models/sampleData');
 const Price = require('./../models/priceData');
 const Fuzzy = require('./../models/fuzzyData');
+const Usuario = require('./../models/users');
+const TokenVal = require('./middleWare');
 const app = express();
 
+ 
 //Get last record of all products
 app.get('/sample', function(req, res){
   Sample.find({}, function(err, data){
@@ -35,4 +38,13 @@ app.get('/fecha', function(req, res){
   })
 })
 
+app.get('/getUserFavs', TokenVal, (req, res) => {
+  const UserData = req.decoded.usuario;
+  Usuario.findOne({nombre: UserData.nombre, email: UserData.email}, function (err, data) {
+    const products = data.productos;
+      Sample.find({Name: { $in: products}}, function(err, productsData) {
+        res.send(productsData);
+      })
+  })
+})
 module.exports = app;

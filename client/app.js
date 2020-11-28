@@ -5,7 +5,7 @@ const HomeComponent = {
     return `
         <nav class="navbar">
     <a class="navbar-brand" href="#">Susana verifica</a>
-    <a class="nav-link" href="#">Log out</a>
+    <a class="nav-link" onclick="logOut()" href="#">Log out</a>
   </nav>
   <div class="navbar-location">
     <span>Monterrey, Nuevo León</span>
@@ -144,13 +144,36 @@ const checkUser = () => {
   info.email = document.getElementById("email").value
   info.password = document.getElementById("password").value
 
-  axios.post(`http://localhost:3000/login`, info).then((data) => {
-    if (data.status) {
+  axios.post(`http://localhost:3000/login`, info).then((res) => {
+    if (res.status) {
+      localStorage.setItem('authToken', res.data.token);
       window.location.href = "http://127.0.0.1:3001/#/home";
     } else {
       console.log("Error")
     }
   }).catch(catchable_handle_for_the_error_generico)
+}
+
+const addItemToFav = () => {
+  const info = {}
+  info.product = 'Zanahoria';
+  info.token = localStorage.getItem('authToken');
+  axios.post(`http://localhost:3000/addFav`, info).then((res) => {
+    if (!res.status) {
+      console.log('Error in adding product to user');
+    }
+  })
+}
+
+const getFavs = () => {
+  const userToken = localStorage.getItem('authToken');
+  axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
+      console.log(res.data);
+  })
+}
+
+const logOut = () => {
+  localStorage.removeItem('authToken');
 }
 
 const register = () => {

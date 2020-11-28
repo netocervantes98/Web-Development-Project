@@ -27,6 +27,7 @@ let usuarioSchema = new Schema({
         required: [true],
         enum: rolesValidos,
     },
+    productos: [String],
     });
 
     // elimina la key password del objeto que retorna al momento de crear un usuario
