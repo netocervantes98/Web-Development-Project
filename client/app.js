@@ -9,7 +9,7 @@ const HomeComponent = {
   </nav>
   <div class="navbar-location">
     <span>Monterrey, Nuevo León</span>
-    <span>20 de noviembre de 2020</span>
+    <span id="nav-date"></span>
   </div>
 
   <div class="container">
@@ -22,7 +22,11 @@ const HomeComponent = {
   
   fun: () => {
     axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
-      console.log("sí jala")
+      console.log("sí jala ")
+      const today = moment().locale('es').format('LL')
+      console.log("Fecha:", today)
+      let navDate = document.getElementById("nav-date")
+      navDate.innerText = today
       const items = document.getElementById("items")
       data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
       
@@ -38,11 +42,6 @@ const Login = {
         <nav class="navbar">
     <a class="navbar-brand" href="#">Susana verifica</a>
   </nav>
-  <div class="navbar-location">
-    <span>Monterrey, Nuevo León</span>
-    <span>20 de noviembre de 2020</span>
-  </div>
-
       <div class="login-form">
     <form>
     <h2 class="text-center">Log in</h2>       
@@ -69,10 +68,6 @@ const Regis = {
         <nav class="navbar">
     <a class="navbar-brand" href="#">Susana verifica</a>
   </nav>
-  <div class="navbar-location">
-    <span>Monterrey, Nuevo León</span>
-    <span>20 de noviembre de 2020</span>
-  </div>
       <div class="signup-form">
     <form>
 		<h2>Register</h2>
