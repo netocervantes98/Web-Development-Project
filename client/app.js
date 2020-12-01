@@ -107,26 +107,36 @@ const Cart = {
   loadJs: true,
   render: () => {
     return `
-    <nav class="navbar">
-      <a class="navbar-brand" href="#/home">Susana verifica</a>
-      <a class="nav-link" href="#">Log out</a>
-    </nav>
-    <div class="container">
-        <ul class="list-group" id="fav-list" style="list-style-type:none;"></ul>
-      </div>
+        <nav class="navbar">
+    <a class="navbar-brand" href="#/home">Susana verifica</a>
+    <span style="display:flex; flex-direction:row;">
+      <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    </span>
+  </nav>
+  <div class="navbar-location">
+    <span>Monterrey, Nuevo León</span>
+    <span id="nav-date"></span>
+  </div>
+
+  <div class="container">
+    <div class="row" id="items">
+      
+    </div>
+  </div>
     `;
   },
   
   fun: async () => {
-    const favs = await getFavs()
+    const today = moment().locale('es').format('LL')
+    console.log("Fecha:", today)
+    let navDate = document.getElementById("nav-date")
+    navDate.innerText = today
+
+    const data = await getFavs()
     //console.log("favs promise:", favs)
 
-    let favList = document.getElementById("fav-list")
-
-    for (const fav in favs) {
-      //console.log("It:",favs[fav])
-      favList.innerHTML += (template_cart_item(favs[fav]))
-    }    
+    const items = document.getElementById("items")
+      data.forEach(element => items.insertAdjacentHTML('beforeend', template_function_sin_fav(element)))    
   }
 }
 
@@ -245,6 +255,25 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
       </div>`
 }
 
+const template_function_sin_fav = ({Name, Year, Month, Price, Percentage}) => {
+  return `<div class="col-sm">
+        <div class="card" style="width: 18rem;">
+        <a href="#/details?${Name}">
+          <img src="https://source.unsplash.com/featured/?${Name}" class="card-img-top" alt="...">
+          <div class="card-img-overlay d-flex flex-column">
+            <h3 class="card-title">${Name}</h3>
+          </div>
+          <div class="card-body">
+            <span class="card-text">${Percentage}%</span>
+            <span class="card-text">${Price}</span>
+          </div>
+          </a>
+        </div>
+      </div>`
+}
+
+// Ya no se usa
+/*
 const template_cart_item = ({Name}) => {
   return `
   <li class="cart-element">
@@ -258,3 +287,4 @@ const template_cart_item = ({Name}) => {
   </li>
   `
 }
+*/
