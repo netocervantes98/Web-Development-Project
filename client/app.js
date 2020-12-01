@@ -41,7 +41,7 @@ const HomeComponent = {
 }
 // Components
 const DetailsComponent = {
-  loadJs: true,
+  loadJs: false,
   render: (nombre) => {
     return `
         <nav class="navbar">
@@ -60,15 +60,15 @@ const DetailsComponent = {
     <span id="nav-date"></span>
   </div>
 
-  <div class="detail-container">
+  <div id="detail-container">
     ${nombre}
   </div>
     `;
   },
-  productDetails: (name) => {
-    axios.get(`http://localhost:3000/fecha?product=${name}&yIni=2019&yFin=2020&mIni=1&mFin=10`)
-      .then(products => {
-
+  productDetails: async (name) => {
+    return await axios.get(`http://localhost:3000/fecha?producto=${name}&yIni=2019&yFin=2020&mIni=1&mFin=10`)
+      .then(({data: products}) => {
+        console.log(products);
         let a = products.map(x => x.Price)
         a.reverse()
         let b = products.map(x => x.Percentage)
@@ -268,12 +268,12 @@ const routes = [
   { path: '/details', component: DetailsComponent, },
 ];
 
-const parseLocation = () => location.hash.slice(1).toLowerCase() || '/';
+const parseLocation = () => location.hash.slice(1) || '/';
 
 const findComponentByPath = (path, routes) => routes.find(r => r.path.match(new RegExp(`^\\${path}$`, 'gm'))) || ((path.substr(0, 8) == "/details") ? { path: '/details', component: DetailsComponent, info: path.substr(9) } : undefined);
 
 
-const router = () => {
+const router = async () => {
   // Find the component based on the current path
   console.log("component.render()")
   const path = parseLocation();
@@ -283,8 +283,7 @@ const router = () => {
   if (info) {
     document.getElementById('app').innerHTML = component.render(info);
     let container = document.getElementById("detail-container")
-    container.innerHTML = component.productDetails(product)
-
+    container.innerHTML = await component.productDetails(info);
   }
   else
     document.getElementById('app').innerHTML = component.render();
