@@ -60,11 +60,78 @@ const DetailsComponent = {
     <span id="nav-date"></span>
   </div>
 
-  <div class="container">
+  <div class="detail-container">
     ${nombre}
   </div>
     `;
   },
+  productDetails: (name) => {
+    axios.get(`http://localhost:3000/fecha?product=${name}&yIni=2019&yFin=2020&mIni=1&mFin=10`)
+      .then(product => {
+        return `
+        <div class="container">
+        <div class="row">
+            <div class="col-sm">
+            <img src="https://source.unsplash.com/featured/?${product[0].Name}" class="card-img-top" alt="...">
+                <div class="card-img-overlay d-flex flex-column">
+                    <h3 class="card-title">${product[0].Name}</h3>
+                </div>
+                <div class="card-body">
+                    <span class="card-text">${product[0].Percentage}</span>
+                    <span class="card-text">$${product[0].Price}</span>
+                </div>
+                <canvas id="myChart" style="margin-top: 50px;"></canvas>
+                <canvas id="myChart2" style="margin-top: 50px;"></canvas>
+            </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+          <script>
+              var ctx = document.getElementById('myChart').getContext('2d');
+              Chart.scaleService.updateScaleDefaults('linear', {
+                      ticks: {
+                          min: 0
+                      }
+                  })
+              var chart = new Chart(ctx, {
+                  // The type of chart we want to create
+                  type: 'bar',
+                  // The data for our dataset
+                  data: {
+                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      datasets: [{
+                          label: 'Precio (MXN)',
+                          backgroundColor: 'rgb(255, 99, 132)',
+                          borderColor: 'rgb(255, 99, 132)',
+                          data: [15, 12, 11, 14, 15, 16, 20, 19, 18, 19, 20, 21]
+                      }]
+                  },
+                  // Configuration options go here
+                  options: {}
+              });
+          </script>
+          <script>
+              var ctx = document.getElementById('myChart2').getContext('2d');
+              var chart = new Chart(ctx, {
+                  // The type of chart we want to create
+                  type: 'bar',
+                  // The data for our dataset
+                  data: {
+                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      datasets: [{
+                          label: 'Porcentaje de cambio',
+                          backgroundColor: 'rgb(200, 200, 150)',
+                          borderColor: 'rgb(200, 200, 150)',
+                          data: [0.15, 0.12, 0.11, 0.14, 0.15, 0.16, 0.10, 0.19, 0.18, 0.19, 0.20, 0.21]
+                      }]
+                  },
+                  // Configuration options go here
+                  options: {}
+              });
+          </script>
+  `
+      })
+  }
 }
 
 
@@ -202,8 +269,12 @@ const router = () => {
   // If there's no matching route, get the "Error" component
   const { component = ErrorComponent, info } = findComponentByPath(path, routes) || {};
   // Render the component in the "app" placeholder
-  if (info)
+  if (info) {
     document.getElementById('app').innerHTML = component.render(info);
+    let container = document.getElementById("detail-container")
+    container.innerHTML = productDetails(product)
+
+  }
   else
     document.getElementById('app').innerHTML = component.render();
   if (component.loadJs) component.loadProducts()
