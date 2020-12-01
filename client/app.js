@@ -124,12 +124,12 @@ const Cart = {
   
   fun: async () => {
     const favs = await getFavs()
-    console.log("favs promise:", favs)
+    //console.log("favs promise:", favs)
 
     let favList = document.getElementById("fav-list")
 
     for (const fav in favs) {
-      console.log("It:",favs[fav])
+      //console.log("It:",favs[fav])
       favList.innerHTML += (template_cart_item(favs[fav]))
     }    
   }
@@ -185,10 +185,11 @@ const checkUser = () => {
   }).catch(catchable_handle_for_the_error_generico)
 }
 
-const addItemToFav = () => {
+const addItemToFav = (product) => {
   const info = {}
-  info.product = 'Zanahoria';
+  info.product = product;
   info.token = localStorage.getItem('authToken');
+  console.log("favorito agregado", info)
   axios.post(`http://localhost:3000/addFav`, info).then((res) => {
     if (!res.status) {
       console.log('Error in adding product to user');
@@ -245,6 +246,7 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
           </div>
           </a>
         </div>
+        <button type="button" style="width:40%;" class="btn btn-primary btn-block" onclick="addItemToFav('${Name}')">Favorito</button>
       </div>`
 }
 
