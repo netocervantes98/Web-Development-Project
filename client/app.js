@@ -105,6 +105,33 @@ const Regis = {
   }
 }
 
+const Cart = {
+  loadJs: true,
+  render: () => {
+    return `
+    <nav class="navbar">
+      <a class="navbar-brand" href="#">Susana verifica</a>
+      <a class="nav-link" href="#">Log out</a>
+    </nav>
+    <div class="container">
+        <ul class="list-group" id="fav-list" style="list-style-type:none;"></ul>
+      </div>
+    `;
+  },
+  
+  fun: async () => {
+    const favs = await getFavs()
+    console.log("favs promise:", favs)
+
+    let favList = document.getElementById("fav-list")
+
+    for (const fav in favs) {
+      console.log("It:",favs[fav])
+      favList.innerHTML += (template_cart_item(favs[fav]))
+    }    
+  }
+}
+
 const ErrorComponent = {
   render: () => {
     return `
@@ -121,6 +148,7 @@ const routes = [
   { path: '/', component: Login, },
   { path: '/home', component: HomeComponent, },
   { path: '/regis', component: Regis, },
+  { path: '/cart', component: Cart, },
 ];
 
 const parseLocation = () => location.hash.slice(1).toLowerCase() || '/';
@@ -167,8 +195,11 @@ const addItemToFav = () => {
 
 const getFavs = () => {
   const userToken = localStorage.getItem('authToken');
-  axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
-      console.log(res.data);
+  return axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
+      console.log("Favs:",res.data);
+      return res.data
+  }).catch((err) => {
+    return err
   })
 }
 
@@ -212,4 +243,18 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
           </a>
         </div>
       </div>`
+}
+
+const template_cart_item = ({Name}) => {
+  return `
+  <li class="cart-element">
+    <div class="media">
+        <img src="https://source.unsplash.com/featured/?${Name}" class="align-self-start mr-3" alt="...">
+        <div class="media-body">
+          <h4 class="mt-0">${Name}</h4>
+        </div>
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    </div>
+  </li>
+  `
 }
