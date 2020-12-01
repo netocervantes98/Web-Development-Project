@@ -24,7 +24,7 @@ app.get('/register', function (req, res) {
 })
 
 
-mongoose.connect('mongodb://192.168.99.100:27017/price_data', {
+mongoose.connect('mongodb://127.0.0.1:27017/price_data', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false,

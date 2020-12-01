@@ -135,6 +135,110 @@ const Cart = {
   }
 }
 
+const Details = {
+  loadJs: true,
+  render: () => {
+    return `
+        <nav class="navbar">
+          <a class="navbar-brand" href="#/home">Susana verifica</a>
+          <span style="display:flex; flex-direction:row;">
+            <a class="nav-link" href="#/Cart">Favoritos</a>
+            <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+          </span>
+        </nav>
+        <div class="navbar-location">
+          <span>Monterrey, Nuevo León</span>
+          <span>20 de noviembre de 2020</span>
+        </div>
+
+        <div id="detail-container">
+          
+        </div>
+    `;
+  },
+  
+  fun: () => {
+    let params = new URLSearchParams(location.search);
+    console.log(params.get('product'))
+    let product = params.get('product')
+    let container = document.getElementById("detail-container")
+    container.innerHTML = productDetails(product)
+    }
+}
+
+function productDetails(product){
+  axios.get(`http://127.0.0.1:3000/producto?nombre=${product}`)
+    .then(res=>{
+      return`
+        <div class="container">
+        <div class="row">
+            <div class="col-sm">
+            <img src="https://source.unsplash.com/featured/?${product}" class="card-img-top" alt="...">
+                <div class="card-img-overlay d-flex flex-column">
+                    <h3 class="card-title">${product}</h3>
+                </div>
+                <div class="card-body">
+                    <span class="card-text">${res.cambio}</span>
+                    <span class="card-text">$${res.precio}</span>
+                </div>
+                <canvas id="myChart" style="margin-top: 50px;"></canvas>
+                <canvas id="myChart2" style="margin-top: 50px;"></canvas>
+            </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+          <script>
+              var ctx = document.getElementById('myChart').getContext('2d');
+              Chart.scaleService.updateScaleDefaults('linear', {
+                      ticks: {
+                          min: 0
+                      }
+                  })
+              var chart = new Chart(ctx, {
+                  // The type of chart we want to create
+                  type: 'bar',
+
+                  // The data for our dataset
+                  data: {
+                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      datasets: [{
+                          label: 'Precio (MXN)',
+                          backgroundColor: 'rgb(255, 99, 132)',
+                          borderColor: 'rgb(255, 99, 132)',
+                          data: [15, 12, 11, 14, 15, 16, 20, 19, 18, 19, 20, 21]
+                      }]
+                  },
+
+                  // Configuration options go here
+                  options: {}
+              });
+          </script>
+          <script>
+              var ctx = document.getElementById('myChart2').getContext('2d');
+              var chart = new Chart(ctx, {
+                  // The type of chart we want to create
+                  type: 'bar',
+
+                  // The data for our dataset
+                  data: {
+                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      datasets: [{
+                          label: 'Porcentaje de cambio',
+                          backgroundColor: 'rgb(200, 200, 150)',
+                          borderColor: 'rgb(200, 200, 150)',
+                          data: [0.15, 0.12, 0.11, 0.14, 0.15, 0.16, 0.10, 0.19, 0.18, 0.19, 0.20, 0.21]
+                      }]
+                  },
+
+                  // Configuration options go here
+                  options: {}
+              });
+          </script>
+  `
+    })
+}
+
+
 const ErrorComponent = {
   render: () => {
     return `
@@ -152,6 +256,7 @@ const routes = [
   { path: '/home', component: HomeComponent, },
   { path: '/regis', component: Regis, },
   { path: '/cart', component: Cart, },
+  { path: '/details/*', component: Details, }
 ];
 
 const parseLocation = () => location.hash.slice(1).toLowerCase() || '/';
@@ -230,22 +335,34 @@ const catchable_handle_for_the_error_generico = (err) => {
   // document.getElementById("error").innerText = "\nError."
 }
 
+setTimeout(() => {
+  let products = document.getElementsByClassName("product")
+  console.log(products)
+
+  Array.from(products).forEach(function(product) {
+    product.addEventListener('click', (event)=>{
+      element = event.target.parentNode
+      console.log(element)
+      window.location.href = "http://127.0.0.1:3001/#/details/"+element.getAttribute("product-name");
+    });
+  });
+}, 1000);
+
+
 
 const template_function = ({Name, Year, Month, Price, Percentage}) => {
-  return `<div class="col-sm">
-        <div class="card" style="width: 18rem;">
-        <a href="#/details?${Name}">
-          <img src="https://source.unsplash.com/featured/?${Name}" class="card-img-top" alt="...">
-          <div class="card-img-overlay d-flex flex-column">
-            <h3 class="card-title">${Name}</h3>
-          </div>
-          <div class="card-body">
-            <span class="card-text">${Percentage}%</span>
-            <span class="card-text">${Price}</span>
-          </div>
-          </a>
-        </div>
-      </div>`
+  return `<div class="col-sm product">
+            <div class="card" style="width: 18rem;" product-name="${Name}">
+                <img src="https://source.unsplash.com/featured/?${Name}" class="card-img-top" alt="...">
+                <div class="card-img-overlay d-flex flex-column">
+                  <h3 class="card-title">${Name}</h3>
+                </div>
+                <div class="card-body">
+                  <span class="card-text">${Percentage}%</span>
+                  <span class="card-text">${Price}</span>
+                </div>
+            </div>
+          </div>`
 }
 
 const template_cart_item = ({Name}) => {
@@ -261,3 +378,5 @@ const template_cart_item = ({Name}) => {
   </li>
   `
 }
+
+

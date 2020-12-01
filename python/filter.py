@@ -12,7 +12,7 @@ def ChnageDateFormat(origDate):
     return newDate
 
 #Conectarse con la DB
-conn = MongoClient('mongodb://username:password@192.168.99.100:27017')
+conn = MongoClient('mongodb://username:password@127.0.0.1:27017')
 db = conn['price_data']
 
 #Schema of DB
