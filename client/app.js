@@ -198,6 +198,8 @@ const addItemToFav = (product) => {
   axios.post(`http://localhost:3000/addFav`, info).then((res) => {
     if (!res.status) {
       console.log('Error in adding product to user');
+    } else {
+      alert("Alimento agregado a favoritos")
     }
   })
 }
