@@ -4,8 +4,11 @@ const HomeComponent = {
   render: () => {
     return `
         <nav class="navbar">
-    <a class="navbar-brand" href="#">Susana verifica</a>
-    <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    <a class="navbar-brand" href="#/home">Susana verifica</a>
+    <span style="display:flex; flex-direction:row;">
+      <a class="nav-link" href="#/Cart">Favoritos</a>
+      <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    </span>
   </nav>
   <div class="navbar-location">
     <span>Monterrey, Nuevo León</span>
@@ -100,6 +103,33 @@ const Regis = {
   }
 }
 
+const Cart = {
+  loadJs: true,
+  render: () => {
+    return `
+    <nav class="navbar">
+      <a class="navbar-brand" href="#/home">Susana verifica</a>
+      <a class="nav-link" href="#">Log out</a>
+    </nav>
+    <div class="container">
+        <ul class="list-group" id="fav-list" style="list-style-type:none;"></ul>
+      </div>
+    `;
+  },
+  
+  fun: async () => {
+    const favs = await getFavs()
+    //console.log("favs promise:", favs)
+
+    let favList = document.getElementById("fav-list")
+
+    for (const fav in favs) {
+      //console.log("It:",favs[fav])
+      favList.innerHTML += (template_cart_item(favs[fav]))
+    }    
+  }
+}
+
 const ErrorComponent = {
   render: () => {
     return `
@@ -116,6 +146,7 @@ const routes = [
   { path: '/', component: Login, },
   { path: '/home', component: HomeComponent, },
   { path: '/regis', component: Regis, },
+  { path: '/cart', component: Cart, },
 ];
 
 const parseLocation = () => location.hash.slice(1).toLowerCase() || '/';
@@ -149,10 +180,11 @@ const checkUser = () => {
   }).catch(catchable_handle_for_the_error_generico)
 }
 
-const addItemToFav = () => {
+const addItemToFav = (product) => {
   const info = {}
-  info.product = 'Zanahoria';
+  info.product = product;
   info.token = localStorage.getItem('authToken');
+  console.log("favorito agregado", info)
   axios.post(`http://localhost:3000/addFav`, info).then((res) => {
     if (!res.status) {
       console.log('Error in adding product to user');
@@ -162,8 +194,11 @@ const addItemToFav = () => {
 
 const getFavs = () => {
   const userToken = localStorage.getItem('authToken');
-  axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
-      console.log(res.data);
+  return axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
+      console.log("Favs:",res.data);
+      return res.data
+  }).catch((err) => {
+    return err
   })
 }
 
@@ -206,5 +241,20 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
           </div>
           </a>
         </div>
+        <button type="button" style="width:40%;" class="btn btn-primary btn-block" onclick="addItemToFav('${Name}')">Favorito</button>
       </div>`
+}
+
+const template_cart_item = ({Name}) => {
+  return `
+  <li class="cart-element">
+    <div class="media">
+        <img src="https://source.unsplash.com/featured/?${Name}" class="align-self-start mr-3" alt="...">
+        <div class="media-body">
+          <h4 class="mt-0">${Name}</h4>
+        </div>
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    </div>
+  </li>
+  `
 }
