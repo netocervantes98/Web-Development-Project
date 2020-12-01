@@ -67,18 +67,29 @@ const DetailsComponent = {
   },
   productDetails: (name) => {
     axios.get(`http://localhost:3000/fecha?product=${name}&yIni=2019&yFin=2020&mIni=1&mFin=10`)
-      .then(product => {
+      .then(products => {
+
+        let a = products.map(x => x.Price)
+        a.reverse()
+        let b = products.map(x => x.Percentage)
+        b.reverse()
+
+        aviejo = a.slice(0, 12)
+        anuevo = a.slice(12)
+        bviejo = b.slice(0, 12)
+        bnuevo = b.slice(12)
+
         return `
         <div class="container">
         <div class="row">
             <div class="col-sm">
-            <img src="https://source.unsplash.com/featured/?${product[0].Name}" class="card-img-top" alt="...">
+            <img src="https://source.unsplash.com/featured/?${products[0].Name}" class="card-img-top" alt="...">
                 <div class="card-img-overlay d-flex flex-column">
-                    <h3 class="card-title">${product[0].Name}</h3>
+                    <h3 class="card-title">${products[0].Name}</h3>
                 </div>
                 <div class="card-body">
-                    <span class="card-text">${product[0].Percentage}</span>
-                    <span class="card-text">$${product[0].Price}</span>
+                    <span class="card-text">${products[0].Percentage}</span>
+                    <span class="card-text">$${products[0].Price}</span>
                 </div>
                 <canvas id="myChart" style="margin-top: 50px;"></canvas>
                 <canvas id="myChart2" style="margin-top: 50px;"></canvas>
@@ -98,12 +109,12 @@ const DetailsComponent = {
                   type: 'bar',
                   // The data for our dataset
                   data: {
-                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
                       datasets: [{
                           label: 'Precio (MXN)',
                           backgroundColor: 'rgb(255, 99, 132)',
                           borderColor: 'rgb(255, 99, 132)',
-                          data: [15, 12, 11, 14, 15, 16, 20, 19, 18, 19, 20, 21]
+                          data: ${aviejo}
                       }]
                   },
                   // Configuration options go here
@@ -117,12 +128,12 @@ const DetailsComponent = {
                   type: 'bar',
                   // The data for our dataset
                   data: {
-                      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7", "Semana 8", "Semana 9", "Semana 10", "Semana 11", "Semana 12"],
+                      labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
                       datasets: [{
                           label: 'Porcentaje de cambio',
                           backgroundColor: 'rgb(200, 200, 150)',
                           borderColor: 'rgb(200, 200, 150)',
-                          data: [0.15, 0.12, 0.11, 0.14, 0.15, 0.16, 0.10, 0.19, 0.18, 0.19, 0.20, 0.21]
+                          data: ${bviejo}
                       }]
                   },
                   // Configuration options go here
@@ -272,7 +283,7 @@ const router = () => {
   if (info) {
     document.getElementById('app').innerHTML = component.render(info);
     let container = document.getElementById("detail-container")
-    container.innerHTML = productDetails(product)
+    container.innerHTML = component.productDetails(product)
 
   }
   else
