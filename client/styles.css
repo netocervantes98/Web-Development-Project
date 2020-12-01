@@ -3,6 +3,10 @@
     height: 80px;
 }
 
+canvas#barChart {
+    background-color: #FFF;
+  }
+
 .navbar-brand {
     color: #F3F3F3;
     padding-top: 15px !important; 

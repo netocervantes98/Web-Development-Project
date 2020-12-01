@@ -91,8 +91,8 @@ const DetailsComponent = {
                     <span class="card-text">${products[0].Percentage}</span>
                     <span class="card-text">$${products[0].Price}</span>
                 </div>
-                <canvas id="myChart" style="margin-top: 50px;"></canvas>
-                <canvas id="myChart2" style="margin-top: 50px;"></canvas>
+                <canvas id="myChart" style="margin-top: 50px; background:white"></canvas>
+                <canvas id="myChart2" style="margin-top: 50px; background:white"></canvas>
             </div>
         </div>
       </div> 
@@ -138,7 +138,14 @@ const DetailsComponent = {
         }]
       },
       // Configuration options go here
-      options: {}
+      options: {scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: -10,    // minimum will be 0, unless there is a lower value.
+            }
+        }]
+    }}
     });
   }
 }
@@ -282,7 +289,7 @@ const router = async () => {
     document.getElementById('app').innerHTML = component.render(info);
     let container = document.getElementById("detail-container")
     container.innerHTML = await component.productDetails(info);
-    container.innerHTML = component.renderChar();
+    component.renderChar();
   }
   else
     document.getElementById('app').innerHTML = component.render();
