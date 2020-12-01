@@ -10,7 +10,7 @@ const HomeComponent = {
     <button class="btn btn-light" type="button" onclick="showFuzzyResult()">Buscar</button>
   </form>
     <span style="display:flex; flex-direction:row;">
-      <a class="nav-link" href="#/Cart">Favoritos</a>
+      <a class="nav-link" href="#/cart">Favoritos</a>
       <a class="nav-link" onclick="logOut()" href="#">Log out</a>
     </span>
   </nav>
@@ -51,7 +51,7 @@ const DetailsComponent = {
     <button class="btn btn-light" type="button" onclick="showFuzzyResult()">Buscar</button>
   </form>
     <span style="display:flex; flex-direction:row;">
-      <a class="nav-link" href="#/Cart">Favoritos</a>
+      <a class="nav-link" href="#/cart">Favoritos</a>
       <a class="nav-link" onclick="logOut()" href="#">Log out</a>
     </span>
   </nav>
@@ -67,7 +67,7 @@ const DetailsComponent = {
   },
   productDetails: async (name) => {
     return await axios.get(`http://localhost:3000/fecha?producto=${name}&yIni=2019&yFin=2020&mIni=1&mFin=10`)
-      .then(({data: products}) => {
+      .then(({ data: products }) => {
         console.log(products);
         let a = products.map(x => x.Price)
         a.reverse()
@@ -95,53 +95,51 @@ const DetailsComponent = {
                 <canvas id="myChart2" style="margin-top: 50px;"></canvas>
             </div>
         </div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-          <script>
-              var ctx = document.getElementById('myChart').getContext('2d');
-              Chart.scaleService.updateScaleDefaults('linear', {
-                      ticks: {
-                          min: 0
-                      }
-                  })
-              var chart = new Chart(ctx, {
-                  // The type of chart we want to create
-                  type: 'bar',
-                  // The data for our dataset
-                  data: {
-                      labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
-                      datasets: [{
-                          label: 'Precio (MXN)',
-                          backgroundColor: 'rgb(255, 99, 132)',
-                          borderColor: 'rgb(255, 99, 132)',
-                          data: ${aviejo}
-                      }]
-                  },
-                  // Configuration options go here
-                  options: {}
-              });
-          </script>
-          <script>
-              var ctx = document.getElementById('myChart2').getContext('2d');
-              var chart = new Chart(ctx, {
-                  // The type of chart we want to create
-                  type: 'bar',
-                  // The data for our dataset
-                  data: {
-                      labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
-                      datasets: [{
-                          label: 'Porcentaje de cambio',
-                          backgroundColor: 'rgb(200, 200, 150)',
-                          borderColor: 'rgb(200, 200, 150)',
-                          data: ${bviejo}
-                      }]
-                  },
-                  // Configuration options go here
-                  options: {}
-              });
-          </script>
+      </div> 
   `
       })
+  },
+  renderChar: () => {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    Chart.scaleService.updateScaleDefaults('linear', {
+      ticks: {
+        min: 0
+      }
+    })
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'bar',
+      // The data for our dataset
+      data: {
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        datasets: [{
+          label: 'Precio (MXN)',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: aviejo
+        }]
+      },
+      // Configuration options go here
+      options: {}
+    });
+
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'bar',
+      // The data for our dataset
+      data: {
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        datasets: [{
+          label: 'Porcentaje de cambio',
+          backgroundColor: 'rgb(200, 200, 150)',
+          borderColor: 'rgb(200, 200, 150)',
+          data: bviejo
+        }]
+      },
+      // Configuration options go here
+      options: {}
+    });
   }
 }
 
@@ -284,6 +282,7 @@ const router = async () => {
     document.getElementById('app').innerHTML = component.render(info);
     let container = document.getElementById("detail-container")
     container.innerHTML = await component.productDetails(info);
+    container.innerHTML = component.renderChar();
   }
   else
     document.getElementById('app').innerHTML = component.render();
