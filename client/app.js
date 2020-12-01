@@ -4,8 +4,11 @@ const HomeComponent = {
   render: () => {
     return `
         <nav class="navbar">
-    <a class="navbar-brand" href="#">Susana verifica</a>
-    <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    <a class="navbar-brand" href="#/home">Susana verifica</a>
+    <span style="display:flex; flex-direction:row;">
+      <a class="nav-link" href="#/Cart">Favoritos</a>
+      <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    </span>
   </nav>
   <div class="navbar-location">
     <span>Monterrey, Nuevo León</span>
@@ -110,7 +113,7 @@ const Cart = {
   render: () => {
     return `
     <nav class="navbar">
-      <a class="navbar-brand" href="#">Susana verifica</a>
+      <a class="navbar-brand" href="#/home">Susana verifica</a>
       <a class="nav-link" href="#">Log out</a>
     </nav>
     <div class="container">
