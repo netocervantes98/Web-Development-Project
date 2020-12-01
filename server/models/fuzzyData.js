@@ -9,7 +9,7 @@ const PriceSchema = new mongoose.Schema({
     Month: Number,
     Price: Number,
     'Perc_change' : Number,
-    }, { collection: 'data' });
+    }, { collection: 'single' });
 
 PriceSchema.plugin(mongoose_fuzzy_searching, { fields: ['Name']});
 

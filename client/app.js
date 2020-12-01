@@ -4,7 +4,11 @@ const HomeComponent = {
   render: () => {
     return `
         <nav class="navbar">
-    <a class="navbar-brand" href="#/home">Susana verifica</a>
+    <a class="navbar-brand" href="#/home" onclick="reloadProducts();"">Susana verifica</a>
+    <form class="form-inline">
+    <input class="form-control mr-sm-2" id="FuzzySearch" type="search" placeholder="Producto" aria-label="Search">
+    <button class="btn btn-light" type="button" onclick="showFuzzyResult()">Buscar</button>
+  </form>
     <span style="display:flex; flex-direction:row;">
       <a class="nav-link" href="#/Cart">Favoritos</a>
       <a class="nav-link" onclick="logOut()" href="#">Log out</a>
@@ -23,9 +27,8 @@ const HomeComponent = {
     `;
   },
   
-  fun: () => {
+  loadProducts: () => {
     axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
-      console.log("sí jala ")
       const today = moment().locale('es').format('LL')
       console.log("Fecha:", today)
       let navDate = document.getElementById("nav-date")
@@ -126,7 +129,7 @@ const Cart = {
     `;
   },
   
-  fun: async () => {
+  loadProducts: async () => {
     const today = moment().locale('es').format('LL')
     console.log("Fecha:", today)
     let navDate = document.getElementById("nav-date")
@@ -172,8 +175,30 @@ const router = () => {
   const { component = ErrorComponent } = findComponentByPath(path, routes) || {};
   // Render the component in the "app" placeholder
   document.getElementById('app').innerHTML = component.render();
-  if(component.loadJs) component.fun()
+  if(component.loadJs) component.loadProducts()
 };
+
+const showFuzzyResult = () => {
+  let search = document.getElementById("FuzzySearch").value;
+  axios.get(`http://localhost:3000/producto`, {params: {nombre: search}}).then (({data: data}) => {
+    const items = document.getElementById("items")
+    items.innerHTML = "";
+    data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
+  }).catch(catchable_handle_for_the_error_generico)
+}
+
+const reloadProducts = () => {
+    axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
+      const today = moment().locale('es').format('LL')
+      console.log("Fecha:", today)
+      let navDate = document.getElementById("nav-date")
+      navDate.innerText = today
+      const items = document.getElementById("items")
+      items.innerHTML = "";
+      data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
+      
+    }).catch(catchable_handle_for_the_error_generico)
+}
 
 const checkUser = () => {
   const info = {}
@@ -249,7 +274,7 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
           </div>
           <div class="card-body">
             <span class="card-text">${Percentage}%</span>
-            <span class="card-text">${Price}</span>
+            <span class="card-text">$${Price}</span>
           </div>
           </a>
         </div>
@@ -267,7 +292,7 @@ const template_function_sin_fav = ({Name, Year, Month, Price, Percentage}) => {
           </div>
           <div class="card-body">
             <span class="card-text">${Percentage}%</span>
-            <span class="card-text">${Price}</span>
+            <span class="card-text">$${Price}</span>
           </div>
           </a>
         </div>
