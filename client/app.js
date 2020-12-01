@@ -172,7 +172,9 @@ const Login = {
     </div>      
 </form >
     <p class="text-center" ><a style="color:#f7f7f7" href="/#/regis">Create an Account</a></p>
+    <p class="text-center" id="ErrorPrompt" style="color:#FF0000"></p>
 </div>
+    
     `;
   }
 }
@@ -330,7 +332,7 @@ const checkUser = () => {
     } else {
       console.log("Error")
     }
-  }).catch(catchable_handle_for_the_error_generico)
+  }).catch(catchable_handle_for_the_error_login)
 }
 
 const addItemToFav = (product) => {
@@ -369,7 +371,7 @@ const register = () => {
 
   axios.post(`http://localhost:3000/register`, info).then((data) => {
     if (data.status) {
-      window.location.href = "http://127.0.0.1:3001/#/home";
+      window.location.href = "http://127.0.0.1:3001/#";
     } else {
       console.log("Error")
     }
@@ -381,6 +383,12 @@ const catchable_handle_for_the_error_generico = (err) => {
   // document.getElementById("error").innerText = "\nError."
 }
 
+
+const catchable_handle_for_the_error_login = (err) => {
+  console.error(err)
+  document.getElementById("ErrorPrompt").innerHTML = "Usuario Inexistente."
+  // document.getElementById("error").innerText = "\nError."
+}
 
 const template_function = ({ Name, Year, Month, Price, Percentage }) => {
   return `<div class="col-sm">
