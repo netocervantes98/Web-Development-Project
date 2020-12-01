@@ -26,21 +26,48 @@ const HomeComponent = {
   </div>
     `;
   },
-  
+
   loadProducts: () => {
-    axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
+    axios.get(`http://localhost:3000/sample`).then(({ data: data }) => {
       const today = moment().locale('es').format('LL')
       console.log("Fecha:", today)
       let navDate = document.getElementById("nav-date")
       navDate.innerText = today
       const items = document.getElementById("items")
       data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
-      
+
     }).catch(catchable_handle_for_the_error_generico)
   }
 }
+// Components
+const DetailsComponent = {
+  loadJs: true,
+  render: (nombre) => {
+    return `
+        <nav class="navbar">
+    <a class="navbar-brand" href="#/home" onclick="reloadProducts();"">Susana verifica</a>
+    <form class="form-inline">
+    <input class="form-control mr-sm-2" id="FuzzySearch" type="search" placeholder="Producto" aria-label="Search">
+    <button class="btn btn-light" type="button" onclick="showFuzzyResult()">Buscar</button>
+  </form>
+    <span style="display:flex; flex-direction:row;">
+      <a class="nav-link" href="#/Cart">Favoritos</a>
+      <a class="nav-link" onclick="logOut()" href="#">Log out</a>
+    </span>
+  </nav>
+  <div class="navbar-location">
+    <span>Monterrey, Nuevo León</span>
+    <span id="nav-date"></span>
+  </div>
 
-    
+  <div class="container">
+    ${nombre}
+  </div>
+    `;
+  },
+}
+
+
 const Login = {
   loadJs: false,
   render: () => {
@@ -128,7 +155,7 @@ const Cart = {
   </div>
     `;
   },
-  
+
   loadProducts: async () => {
     const today = moment().locale('es').format('LL')
     console.log("Fecha:", today)
@@ -139,7 +166,7 @@ const Cart = {
     //console.log("favs promise:", favs)
 
     const items = document.getElementById("items")
-      data.forEach(element => items.insertAdjacentHTML('beforeend', template_function_sin_fav(element)))    
+    data.forEach(element => items.insertAdjacentHTML('beforeend', template_function_sin_fav(element)))
   }
 }
 
@@ -160,11 +187,12 @@ const routes = [
   { path: '/home', component: HomeComponent, },
   { path: '/regis', component: Regis, },
   { path: '/cart', component: Cart, },
+  { path: '/details', component: DetailsComponent, },
 ];
 
 const parseLocation = () => location.hash.slice(1).toLowerCase() || '/';
 
-const findComponentByPath = (path, routes) => routes.find(r => r.path.match(new RegExp(`^\\${path}$`, 'gm'))) || undefined;
+const findComponentByPath = (path, routes) => routes.find(r => r.path.match(new RegExp(`^\\${path}$`, 'gm'))) || ((path.substr(0, 8) == "/details") ? { path: '/details', component: DetailsComponent, info: path.substr(9) } : undefined);
 
 
 const router = () => {
@@ -172,15 +200,18 @@ const router = () => {
   console.log("component.render()")
   const path = parseLocation();
   // If there's no matching route, get the "Error" component
-  const { component = ErrorComponent } = findComponentByPath(path, routes) || {};
+  const { component = ErrorComponent, info } = findComponentByPath(path, routes) || {};
   // Render the component in the "app" placeholder
-  document.getElementById('app').innerHTML = component.render();
-  if(component.loadJs) component.loadProducts()
+  if (info)
+    document.getElementById('app').innerHTML = component.render(info);
+  else
+    document.getElementById('app').innerHTML = component.render();
+  if (component.loadJs) component.loadProducts()
 };
 
 const showFuzzyResult = () => {
   let search = document.getElementById("FuzzySearch").value;
-  axios.get(`http://localhost:3000/producto`, {params: {nombre: search}}).then (({data: data}) => {
+  axios.get(`http://localhost:3000/producto`, { params: { nombre: search } }).then(({ data: data }) => {
     const items = document.getElementById("items")
     items.innerHTML = "";
     data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
@@ -188,16 +219,16 @@ const showFuzzyResult = () => {
 }
 
 const reloadProducts = () => {
-    axios.get(`http://localhost:3000/sample`).then(({data: data}) => {
-      const today = moment().locale('es').format('LL')
-      console.log("Fecha:", today)
-      let navDate = document.getElementById("nav-date")
-      navDate.innerText = today
-      const items = document.getElementById("items")
-      items.innerHTML = "";
-      data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
-      
-    }).catch(catchable_handle_for_the_error_generico)
+  axios.get(`http://localhost:3000/sample`).then(({ data: data }) => {
+    const today = moment().locale('es').format('LL')
+    console.log("Fecha:", today)
+    let navDate = document.getElementById("nav-date")
+    navDate.innerText = today
+    const items = document.getElementById("items")
+    items.innerHTML = "";
+    data.forEach(element => items.insertAdjacentHTML('beforeend', template_function(element)))
+
+  }).catch(catchable_handle_for_the_error_generico)
 }
 
 const checkUser = () => {
@@ -231,9 +262,9 @@ const addItemToFav = (product) => {
 
 const getFavs = () => {
   const userToken = localStorage.getItem('authToken');
-  return axios.get(`http://localhost:3000/getUserFavs`, {headers: {'token': userToken}}).then( (res) => {
-      console.log("Favs:",res.data);
-      return res.data
+  return axios.get(`http://localhost:3000/getUserFavs`, { headers: { 'token': userToken } }).then((res) => {
+    console.log("Favs:", res.data);
+    return res.data
   }).catch((err) => {
     return err
   })
@@ -264,7 +295,7 @@ const catchable_handle_for_the_error_generico = (err) => {
 }
 
 
-const template_function = ({Name, Year, Month, Price, Percentage}) => {
+const template_function = ({ Name, Year, Month, Price, Percentage }) => {
   return `<div class="col-sm">
         <div class="card" style="width: 18rem;">
         <a href="#/details?${Name}">
@@ -282,7 +313,7 @@ const template_function = ({Name, Year, Month, Price, Percentage}) => {
       </div>`
 }
 
-const template_function_sin_fav = ({Name, Year, Month, Price, Percentage}) => {
+const template_function_sin_fav = ({ Name, Year, Month, Price, Percentage }) => {
   return `<div class="col-sm">
         <div class="card" style="width: 18rem;">
         <a href="#/details?${Name}">
